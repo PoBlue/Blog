@@ -29,7 +29,7 @@ def readBlog(blog_id):
 
 @app.route('/blog/new')
 def newBlog():
-	return 'new blog'
+	return render_template('newBlog.html')
 
 if __name__ == '__main__':
 	app.debug = True 
