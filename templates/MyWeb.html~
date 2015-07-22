@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>MyWeb</title>
+		<link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.css')}}">
+		<link rel="stylesheet" href="{{url_for('static',filename='css/mystyle.css')}}">
+		<script src="{{url_for('static',filename='js/jquery-1.11.3.min.js')}}"></script>
+		<script type="text/javascript" src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+	</head>
+	<body>
+		<nav class="navbar navbar-inverse navbar-static-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">MyWeb</a>
+				</div>
+				<div id="navbar" class="collapse navbar-collapse" >
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#">项目</a></li>
+						<li><a href="#">Blog</a></li>
+						<li><a href="#">消息</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container">
+			<div class="row main">
+				<div class="col-md-12 text-center">
+					<H1 class="super">追梦者</H1>
+					<H4 class="margin">做人没梦,跟咸鱼有何区别</H4>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12"><hr/></div>
+			</div>
+			<div class="row text-center">
+				<div class="col-md-4">
+					<img src="http://placehold.it/300x75" alt="bottom.img">
+					<h3>项目</h3>
+					<p>todo</p>
+				</div>
+				<div class="col-md-4">
+					<img src="http://placehold.it/300x75" alt="bottom.img">
+					<h3>消息</h3>
+					<p>todo</p>
+				</div>
+				<div class="col-md-4">
+					<img src="http://placehold.it/300x75" alt="bottom.img">
+					<h3>Blog</h3>
+					<p>todo</p>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

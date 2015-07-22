@@ -1,0 +1,38 @@
+.navbar-inverse{
+	/*background-color:todo;
+	 border-color:todo;
+	 */ }
+
+nav{
+	font-size: 14px;
+}
+
+.site-nav{
+	min-height: 35px;
+	height: 47px;
+}
+
+.navbar-brand{
+	font-size: 24px;
+	font-family: -webkit-body;
+}
+
+.navbar-inverse .navbar-brand{
+	color:white;
+}
+
+.main{
+	margin-top: 70px;
+	margin-bottom: 150px;
+}
+
+.super{
+	font-family: -webkit-pictograph;
+	font-weight: 100;
+	font-size: 160px;
+}
+
+.margin{
+	font-weight: 400;
+	color: dimgray;
+}
