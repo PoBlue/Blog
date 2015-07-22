@@ -27,6 +27,14 @@ def readBlog(blog_id):
 	else:
 		return 'sorry did not have it '
 
+@app.route('/blog/<int:blog_id>/edit')
+def editBlog(blog_id):
+	return 'edit blog %i' %blog_id
+
+@app.route('/blog/<int:blog_id>/delete')
+def deleteBlog(blog_id):
+	return 'delete blog %i' %blog_id
+
 @app.route('/blog/new')
 def newBlog():
 	return render_template('newBlog.html')
