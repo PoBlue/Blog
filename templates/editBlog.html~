@@ -1,17 +1,17 @@
-{% extends "base.html" %}
-{% block body %}
-<h1>New Blog</h1>
+{% extends "newBlog.html" %}
+{% block body%}
+<h1>Edit Blog</h1>
 <form method="post" action="#">
 	<label> 
 	<h3>Title :
-	<input type="text" name="title" value="#">
+	<input type="text" name="title" value="{{text}}">
 	</h3>
 	</label>
 	
 
 	<h3>Content:</h3>
 	<textarea cols="50" rows="8" name="content" >
-		#
+{{content}}
 	</textarea>
 	
 	<br>
@@ -19,5 +19,5 @@
 
 	<input type="submit">
 </form>
-<a href="#">Back to the Table</a>
-{% endblock %}
+<a href="#">Do not Edit it</a>
+{%endblock%}

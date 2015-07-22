@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block body %}
+
+DELETE <b><em>{{blog['title']}}</em></b> ?
+<form method="post" action="#">
+	<label>
+	yes
+	<input type="radio" name="flag" value="on">
+	</label>
+
+	<label>
+	no
+	<input type="radio" name="flag" value="off">
+	</label>
+	<input type="submit">
+</form>
+
+{% endblock %}

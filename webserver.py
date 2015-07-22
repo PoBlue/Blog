@@ -29,11 +29,13 @@ def readBlog(blog_id):
 
 @app.route('/blog/<int:blog_id>/edit')
 def editBlog(blog_id):
-	return 'edit blog %i' %blog_id
+	text = 'ok'
+	content = 'hello'
+	return render_template('editBlog.html',text = text,content = content)
 
 @app.route('/blog/<int:blog_id>/delete')
 def deleteBlog(blog_id):
-	return 'delete blog %i' %blog_id
+	return render_template('deleteBlog.html',blog = blogs[2])
 
 @app.route('/blog/new')
 def newBlog():

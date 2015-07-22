@@ -1,16 +1,17 @@
 {% extends "base.html" %}
 {% block body %}
-<h1>New Blog</h1>
+<h1>{%block header%}{%endblock%}</h1>
 <form method="post" action="#">
 	<label> 
 	<h3>Title :
-	<input type="text" name="title" value="preserve">
+	<input type="text" name="title" value="">
 	</h3>
 	</label>
 	
 
 	<h3>Content:</h3>
-	<textarea cols="50" rows="8" name="content" value="preserve">
+	<textarea cols="50" rows="8" name="content" >
+		value="preserve"
 	</textarea>
 	
 	<br>
