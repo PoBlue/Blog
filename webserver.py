@@ -12,6 +12,14 @@ engine = create_engine('sqlite:///bolg.db')
 Session = sessionmaker(bind=engine)
 session = Session()
 
+def valizBlog(title,content):
+	if not title :
+		return False
+	if not content:
+		return False
+	else :
+		return True
+
 
 @app.route('/')
 @app.route('/hello')
@@ -37,21 +45,38 @@ def editBlog(blog_id):
 
 	if blog:
 		if request.method == 'POST':
-			blog.title = request.form['title']
-			blog.content = request.form['content']
-
-			session.add(blog)
-			session.commit()
-			return redirect(url_for('readBlog',blog_id=blog.id))
+			if valizBlog(request.form['title'],request.form['content']):
+				blog.title = request.form['title']
+				blog.content = request.form['content']
+				session.add(blog)
+				session.commit()
+				return redirect(url_for('readBlog',blog_id=blog.id))
+			else:
+				return render_template('error.html',error='empty title or content ')
 		else:
 			return render_template('editBlog.html',blog=blog)
 	else:
 		return render_template('error.html',error='Sotty not have this blog')
 
-@app.route('/blog/<int:blog_id>/delete')
+@app.route('/blog/<int:blog_id>/delete',methods=['POST','GET'])
 def deleteBlog(blog_id):
 	blog = session.query(Blog).filter_by(id=blog_id).first()
-	return render_template('deleteBlog.html',blog = blog)
+	if blog:
+		if request.method == 'POST':
+			if request.form['flag'] == 'on':
+				session.delete(blog)
+				session.commit()
+				return redirect(url_for('listBlog'))
+
+			elif request.form['flag'] == 'off':
+				return redirect(url_for('readBlog',blog_id=blog.id))
+			else:
+				return render_template('error.html',error='Bad Post')
+				
+		else:
+			return render_template('deleteBlog.html',blog = blog)
+	else:
+		return render_template('error.html',error='Sotty not have this blog')
 
 @app.route('/blog/new',methods=['GET','POST'])
 def newBlog():
@@ -59,12 +84,13 @@ def newBlog():
 		title = request.form['title']
 		content = request.form['content']
 		time = strftime("%Y-%m-%d %I:%M%p")
-
-		new = Blog(title=title,content=content,time=time)
-		session.add(new)
-		session.commit()
-
-		return redirect(url_for('listBlog'))
+		if valizBlog(title,content):
+			new = Blog(title=title,content=content,time=time)
+			session.add(new)
+			session.commit()
+			return redirect(url_for('listBlog'))
+		else:
+			return render_template('error.html',error='empty title or content ')
 	else:
 		return render_template('newBlog.html')
 

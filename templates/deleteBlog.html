@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block body %}
 
-DELETE <b><em>{{blog['title']}}</em></b> ?
-<form method="post" action="#">
+DELETE <b><em>{{blog.title}}</em></b> ?
+<form method="post" action="{{url_for('deleteBlog',blog_id=blog.id)}}">
 	<label>
 	yes
 	<input type="radio" name="flag" value="on">
