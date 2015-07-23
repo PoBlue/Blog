@@ -14,7 +14,7 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 def valizBlog(title,content):
-	if re.match(r'^[^ ]+',title) and re.match(r'^[^ ]$',content):
+	if re.match(r'^[^ ]+',title) and re.match('^[^ ]+$',content,re.M):
 		return True
 	else:
 		return False
@@ -44,9 +44,9 @@ def editBlog(blog_id):
 
 	if blog:
 		if request.method == 'POST':
-			if valizBlog(request.form['title'],request.form['content']):
-				blog.title = request.form['title']
-				blog.content = request.form['content']
+			blog.title = request.form['title']
+			blog.content = request.form['content']
+			if valizBlog(blog.title,blog.content):
 				session.add(blog)
 				session.commit()
 
@@ -54,6 +54,10 @@ def editBlog(blog_id):
 				return redirect(url_for('readBlog',blog_id=blog.id))
 			else:
 				flash('empty title or content')
+				tmp = render_template('editBlog.html',blog=blog)
+				session.rollback()
+
+				return tmp
 
 		return render_template('editBlog.html',blog=blog)
 	else:
