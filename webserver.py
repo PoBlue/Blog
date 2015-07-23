@@ -1,10 +1,17 @@
+from time import strftime
 from flask import Flask,render_template,url_for,request,redirect,flash,jsonify
+
 app = Flask(__name__)
 
-#visual database
-blogs = [{'id':1,'title':'For test','content':'hello,world!','time':'1888-12-21'},
-		{'id':2,'title':'For test2','content':'hello,world!2','time':'1892-10-20'},
-		{'id':3,'title':'For test3','content':'hello,world!3','time':'1890-9-20'}]
+#sqlalchemy loaded 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from db_setup import Blog,Login
+
+engine = create_engine('sqlite:///bolg.db')
+Session = sessionmaker(bind=engine)
+session = Session()
+
 
 @app.route('/')
 @app.route('/hello')
@@ -13,14 +20,12 @@ def mainRage():
 
 @app.route('/blog')
 def listBlog():
+	blogs = session.query(Blog).all()
 	return render_template('blogList.html',blogs = blogs)
 
 @app.route('/blog/<int:blog_id>/read')
 def readBlog(blog_id):
-	blog = None
-	for e in blogs:
-		if e['id'] == blog_id:
-			blog = e 
+	blog = session.query(Blog).filter_by(title='For test').first()
 
 	if blog:	
 		return render_template('readBlog.html',blog = blog)
@@ -37,9 +42,20 @@ def editBlog(blog_id):
 def deleteBlog(blog_id):
 	return render_template('deleteBlog.html',blog = blogs[2])
 
-@app.route('/blog/new')
+@app.route('/blog/new',methods=['GET','POST'])
 def newBlog():
-	return render_template('newBlog.html')
+	if request.method == 'POST':
+		title = request.form['title']
+		content = request.form['content']
+		time = strftime("%Y-%m-%d %I:%M%p")
+
+		new = Blog(title=title,content=content,time=time)
+		session.add(new)
+		session.commit()
+
+		return redirect(url_for('listBlog'))
+	else:
+		return render_template('newBlog.html')
 
 if __name__ == '__main__':
 	app.debug = True 

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
 <h1>New Blog</h1>
-<form method="post" action="#">
+<form method="post" action="{{url_for('newBlog')}}">
 	<label> 
 	<h3>Title :
 	<input type="text" name="title" value="#">
@@ -19,5 +19,5 @@
 
 	<input type="submit">
 </form>
-<a href="#">Back to the Table</a>
+<a href="{{url_for('listBlog')}}">Back to the Table</a>
 {% endblock %}
