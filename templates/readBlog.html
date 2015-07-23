@@ -4,10 +4,10 @@
 <h5>write in {{blog.time}}</h5>
 <hr>
 <p>{{blog.content}}</p>
-<a href="#">Edit</a>
+<a href="{{url_for('editBlog',blog_id=blog.id)}}">Edit</a>
 <br>
-<a href="#">Delete</a>
+<a href="{{url_for('deleteBlog',blog_id=blog.id)}}">Delete</a>
 <br>
-<a href="#">Back to Table</a>
+<a href="{{url_for('listBlog')}}">Back to Table</a>
 
 {% endblock %}

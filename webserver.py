@@ -25,8 +25,7 @@ def listBlog():
 
 @app.route('/blog/<int:blog_id>/read')
 def readBlog(blog_id):
-	blog = session.query(Blog).filter_by(title='For test').first()
-
+	blog = session.query(Blog).filter_by(id=blog_id).first()
 	if blog:	
 		return render_template('readBlog.html',blog = blog)
 	else:
