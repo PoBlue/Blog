@@ -1,4 +1,4 @@
-from time import strftime
+from time import strftime,localtime
 from flask import Flask,render_template,url_for,request,redirect,flash,jsonify
 
 app = Flask(__name__)
@@ -50,7 +50,8 @@ def editBlog(blog_id):
 
 @app.route('/blog/<int:blog_id>/delete')
 def deleteBlog(blog_id):
-	return render_template('deleteBlog.html',blog = blogs[2])
+	blog = session.query(Blog).filter_by(id=blog_id).first()
+	return render_template('deleteBlog.html',blog = blog)
 
 @app.route('/blog/new',methods=['GET','POST'])
 def newBlog():
