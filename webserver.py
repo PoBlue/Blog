@@ -29,7 +29,7 @@ def readBlog(blog_id):
 	if blog:	
 		return render_template('readBlog.html',blog = blog)
 	else:
-		return 'sorry did not have it '
+		return render_template('error.html',error='Sotty not have this blog')
 
 @app.route('/blog/<int:blog_id>/edit')
 def editBlog(blog_id):
