@@ -1,17 +1,17 @@
-{% extends "newBlog.html" %}
+{% extends "base.html" %}
 {% block body%}
 <h1>Edit Blog</h1>
-<form method="post" action="#">
+<form method="post" action="{{url_for('editBlog')}}">
 	<label> 
 	<h3>Title :
-	<input type="text" name="title" value="{{text}}">
+	<input type="text" name="title" value="{{blog.title}}">
 	</h3>
 	</label>
 	
 
 	<h3>Content:</h3>
 	<textarea cols="50" rows="8" name="content" >
-{{content}}
+{{blog.content}}
 	</textarea>
 	
 	<br>
@@ -19,5 +19,5 @@
 
 	<input type="submit">
 </form>
-<a href="#">Do not Edit it</a>
+<a href="{{url_for('readBlog',blog_id=blog.id)}}">Do not Edit it</a>
 {%endblock%}

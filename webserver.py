@@ -31,11 +31,22 @@ def readBlog(blog_id):
 	else:
 		return render_template('error.html',error='Sotty not have this blog')
 
-@app.route('/blog/<int:blog_id>/edit')
+@app.route('/blog/<int:blog_id>/edit',methods=['GET','POST'])
 def editBlog(blog_id):
-	text = 'ok'
-	content = 'hello'
-	return render_template('editBlog.html',text = text,content = content)
+	blog = session.query(Blog).filter_by(id=blog_id).first()
+
+	if blog:
+		if request.method == 'POST':
+			blog.title = request.form['title']
+			blog.content = request.form['content']
+
+			session.add(blog)
+			session.commit()
+			return redirect(url_for('readBlog',blog_id=blog.id))
+		else:
+			return render_template('editBlog.html',blog=blog)
+	else:
+		return render_template('error.html',error='Sotty not have this blog')
 
 @app.route('/blog/<int:blog_id>/delete')
 def deleteBlog(blog_id):
