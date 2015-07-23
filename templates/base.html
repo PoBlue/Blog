@@ -2,7 +2,16 @@
 <head>
 </head>
 <body>
-	{% block body%}
-	{%endblock%}
+{% block body%}
+{% block flash%}
+	{% with messages = get_flashed_messages() %}
+		{% if messages %}
+			{% for message in messages %}
+				<h3>{{ message }}</h3>
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
+{%endblock%}
+{%endblock%}
 </body>
 </html>

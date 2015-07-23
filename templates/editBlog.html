@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 {% block body%}
 <h1>Edit Blog</h1>
+
+{% with messages = get_flashed_messages() %}
+	{% if messages %}
+		{% for message in messages %}
+			<h3>{{ message }}</h3>
+		{% endfor %}
+	{% endif %}
+{% endwith %}
+
 <form method="post" action="{{url_for('editBlog',blog_id=blog.id)}}">
 	<label> 
 	<h3>Title :

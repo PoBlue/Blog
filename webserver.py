@@ -1,3 +1,4 @@
+import re
 from time import strftime,localtime
 from flask import Flask,render_template,url_for,request,redirect,flash,jsonify
 
@@ -13,12 +14,10 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 def valizBlog(title,content):
-	if not title :
-		return False
-	if not content:
-		return False
-	else :
+	if re.match(r'^[^ ]+',title) and re.match(r'^[^ ]$',content):
 		return True
+	else:
+		return False
 
 
 @app.route('/')
@@ -50,11 +49,13 @@ def editBlog(blog_id):
 				blog.content = request.form['content']
 				session.add(blog)
 				session.commit()
+
+				flash('edit sucessful')
 				return redirect(url_for('readBlog',blog_id=blog.id))
 			else:
-				return render_template('error.html',error='empty title or content ')
-		else:
-			return render_template('editBlog.html',blog=blog)
+				flash('empty title or content')
+
+		return render_template('editBlog.html',blog=blog)
 	else:
 		return render_template('error.html',error='Sotty not have this blog')
 
@@ -95,5 +96,6 @@ def newBlog():
 		return render_template('newBlog.html')
 
 if __name__ == '__main__':
+	app.secret_key = 'mysecret'
 	app.debug = True 
 	app.run(host = '0.0.0.0' , port = 8080)
