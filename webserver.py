@@ -1,6 +1,6 @@
 import re
 from time import strftime,localtime
-from flask import Flask,render_template,url_for,request,redirect,flash,jsonify
+from flask import Flask,render_template,url_for,request,redirect,flash,jsonify,make_response
 
 app = Flask(__name__)
 
@@ -16,11 +16,13 @@ session = Session()
 
 @app.route('/blog/register')
 def register():
-	return render_template('register.html')
+	rep = make_response(render_template('register.html'))
+	return rep
 
 @app.route('/blog/login')
 def login():
-	return render_template('login.html')
+	rep = make_response(render_template('login.html')) 
+	return rep
 
 @app.route('/blog/logout')
 def logout():
