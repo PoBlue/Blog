@@ -14,7 +14,7 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 def valizBlog(title,content):
-	if re.match(r'^[^ ]+',title) and re.match('^[^ ]+$',content,re.M):
+	if re.match(r'^[^ ]+',title) and re.findall('[^ \n\r\t]',content):
 		return True
 	else:
 		return False
