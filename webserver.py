@@ -1,4 +1,4 @@
-import re
+import re,hmac
 from time import strftime,localtime
 from flask import Flask,render_template,url_for,request,redirect,flash,jsonify,make_response
 
@@ -13,9 +13,24 @@ engine = create_engine('sqlite:///bolg.db')
 Session = sessionmaker(bind=engine)
 session = Session()
 
+Login = [{'id':1,'user_name':'rwer','pwd':'fajk'},{'id':2,'user_name':'hello','pwd':'fajk'},{'id':3,'user_name':'hello','pwd':'fajk'}]
+SECRET = 'hello,world'
+
+#make cookie and check fuc 
+def hash_str(s):
+	return hmac.new(SECRET,s).hexdigest()
+
+def make_secure_val(s):
+	return "%s|%s" % (s,hash_str(s))
+
+def check_secure_val(h):
+	val = h.split('|')[0]
+	if h == make_secure_val(val):
+		return val
 
 @app.route('/blog/register')
 def register():
+
 	rep = make_response(render_template('register.html'))
 	return rep
 
@@ -28,9 +43,9 @@ def login():
 def logout():
 	return 'logout'
 
-@app.route('/blog/<int:user_id>/welcome')
-def welcome(user_id):
-	return '<h1>welcome %i</h1>' % user_id
+@app.route('/blog/<int:user_name>/welcome')
+def welcome(user_name):
+	return '<h1>welcome %i</h1>' % user_name
 
 #blog page
 def valizBlog(title,content):
