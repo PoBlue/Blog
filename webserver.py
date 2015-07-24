@@ -1,4 +1,4 @@
-import re,hmac
+import re,hmac,random,string,hashlib
 from time import strftime,localtime
 from flask import Flask,render_template,url_for,request,redirect,flash,jsonify,make_response
 
@@ -13,10 +13,17 @@ engine = create_engine('sqlite:///bolg.db')
 Session = sessionmaker(bind=engine)
 session = Session()
 
-Login = [{'id':1,'user_name':'rwer','pwd':'fajk'},{'id':2,'user_name':'hello','pwd':'fajk'},{'id':3,'user_name':'hello','pwd':'fajk'}]
-SECRET = 'hello,world'
+Logins = [{'id':1,'user_name':'rwer','pwd':'fajk'},{'id':2,'user_name':'hello','pwd':'fajk'},{'id':3,'user_name':'hello','pwd':'fajk'}]
+
+#blog func
+def valizBlog(title,content):
+	if re.match(r'^[^ ]+',title) and re.findall('[^ \n\r\t]',content):
+		return True
+	else:
+		return False
 
 #make cookie and check fuc 
+SECRET = 'hello,world'
 def hash_str(s):
 	return hmac.new(SECRET,s).hexdigest()
 
@@ -24,35 +31,96 @@ def make_secure_val(s):
 	return "%s|%s" % (s,hash_str(s))
 
 def check_secure_val(h):
+	if not h :
+		return None
+
 	val = h.split('|')[0]
 	if h == make_secure_val(val):
 		return val
 
-@app.route('/blog/register')
+#make hash password
+def make_salt():
+	return ''.join(random.choice(string.letters) for x in range(5))
+
+def make_pw_hash(name,pw,salt=None):
+	if not salt:
+		salt = make_salt()
+	h = hashlib.sha256(name+pw+salt).hexdigest()
+	return '%s,%s' % ( h,salt )
+
+def valid_pw(name,pw,h):
+	salt = h.split(',')[1]
+	print make_pw_hash(name,pw,salt) == h
+	return make_pw_hash(name,pw,salt) == h
+
+@app.route('/blog/register',methods=['POST','GET'])
 def register():
+	if request.method == "POST":
+		user_name = request.form['user_name']
+		print user_name
+		pwd = request.form['pw']
+		apwd = request.form['apw']
+		if pwd != apwd :
+			return 'not same in twic'
 
-	rep = make_response(render_template('register.html'))
-	return rep
+		if not (user_name and pwd and apwd):
+			return 'empty value'
 
-@app.route('/blog/login')
+		for e in Logins:
+			print e
+			if e.get('user_name') == user_name:
+				return 'have this name'
+
+		Logins.append({'user_name':user_name,'pwd':make_pw_hash(user_name,pwd)})
+
+		rep = make_response(redirect(url_for('welcome',user_name=user_name)))
+		rep.set_cookie('user_id',make_secure_val(user_name))
+
+		return rep 
+		
+	return render_template('register.html')
+
+@app.route('/blog/login',methods=['GET','POST'])
 def login():
-	rep = make_response(render_template('login.html')) 
-	return rep
+	print Logins
+	if request.method == "POST":	
+		user_name = request.form['user_name']
+		pwd = request.form['pw']
+
+		if not valizBlog(user_name,pwd):
+			return 'empty pwd or user_name)'
+
+		for e in Logins:
+			print e.get('user_name'),user_name
+			if e.get('user_name') == user_name:
+				h = e.get('pwd')
+				if valid_pw(user_name,pwd,h):
+					rep = make_response(redirect(url_for('welcome',user_name=user_name)))
+					rep.set_cookie('user_id',make_secure_val(user_name))
+					return rep
+				else:
+					return 'pwd worng'
+
+	return make_response(render_template('login.html')) 
 
 @app.route('/blog/logout')
 def logout():
-	return 'logout'
+	rep = make_response(redirect(url_for('login')))
 
-@app.route('/blog/<int:user_name>/welcome')
+	rep.set_cookie('user_id','')
+	return rep
+
+@app.route('/blog/<user_name>/welcome')
 def welcome(user_name):
-	return '<h1>welcome %i</h1>' % user_name
+	user_cook = request.cookies.get('user_id')
+	print type(user_cook)
+	if check_secure_val(user_cook):
+		return '<h1>welcome %s</h1>' % user_name
+	
+	return redirect(url_for('register'))
+	
 
 #blog page
-def valizBlog(title,content):
-	if re.match(r'^[^ ]+',title) and re.findall('[^ \n\r\t]',content):
-		return True
-	else:
-		return False
 
 @app.route('/')
 @app.route('/hello')
