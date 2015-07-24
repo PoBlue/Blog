@@ -13,12 +13,29 @@ engine = create_engine('sqlite:///bolg.db')
 Session = sessionmaker(bind=engine)
 session = Session()
 
+
+@app.route('/blog/register')
+def register():
+	return render_template('register.html')
+
+@app.route('/blog/login')
+def login():
+	return render_template('login.html')
+
+@app.route('/blog/logout')
+def logout():
+	return 'logout'
+
+@app.route('/blog/<int:user_id>/welcome')
+def welcome(user_id):
+	return '<h1>welcome %i</h1>' % user_id
+
+#blog page
 def valizBlog(title,content):
 	if re.match(r'^[^ ]+',title) and re.findall('[^ \n\r\t]',content):
 		return True
 	else:
 		return False
-
 
 @app.route('/')
 @app.route('/hello')

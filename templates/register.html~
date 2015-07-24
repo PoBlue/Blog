@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block body%}
+<h1>Register</h1>
+<form action="#" method='POST'>
+
+	<label>USER NAME:
+	</label>
+		<input name='user_name' type='text'>
+	<br>
+
+	<label>PASSWORD:
+		<input name='pw' type='password'>
+	</label>
+	<br>
+
+	<label>vertify PASSWORD:
+		<input name='apw' type='password'>
+	</label>
+	<br>
+
+	<label>Email:
+		<input name='email' type='text'>
+	</label>
+	<br>
+
+	<input type='submit'>
+</form>
+{% endblock %}
