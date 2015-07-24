@@ -85,19 +85,22 @@ def deleteBlog(blog_id):
 
 @app.route('/blog/new',methods=['GET','POST'])
 def newBlog():
+	blog = dict([('title',''),('content','')]) 
 	if request.method == 'POST':
-		title = request.form['title']
-		content = request.form['content']
+		blog['title'] = request.form['title']
+		blog['content']  = request.form['content']
 		time = strftime("%Y-%m-%d %I:%M%p")
-		if valizBlog(title,content):
-			new = Blog(title=title,content=content,time=time)
+		if valizBlog(blog['title'],blog['content']):
+			new = Blog(title=blog['title'],content=blog['content'],time=time)
 			session.add(new)
 			session.commit()
+			flash('New Blog %s' % blog['title'])
 			return redirect(url_for('listBlog'))
 		else:
-			return render_template('error.html',error='empty title or content ')
+			flash('empty title or content')
+			return render_template('newBlog.html',blog=blog)
 	else:
-		return render_template('newBlog.html')
+		return render_template('newBlog.html',blog=blog)
 
 if __name__ == '__main__':
 	app.secret_key = 'mysecret'

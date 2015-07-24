@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block body%}
 <h1>My Blog</h1>
+
+{% block flash%}
+{{super()}}
+{% endblock %}
+
 <a href="{{url_for('newBlog')}}">New Blog</a>
 </br></br>
 {%for blog in blogs%}
