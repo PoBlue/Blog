@@ -1,16 +1,37 @@
 {% extends "base.html" %}
 {% block body %}
-<h1>{{blog.title}}</h1>
-<h5>write in {{blog.time}}</h5>
-{% block flash%}
-{{super()}}
-{% endblock %}
-<hr>
-<p>{{blog.content|safe}}</p>
-<a href="{{url_for('editBlog',blog_id=blog.id)}}">Edit</a>
-<br>
-<a href="{{url_for('deleteBlog',blog_id=blog.id)}}">Delete</a>
-<br>
-<a href="{{url_for('listBlog')}}">Back to Table</a>
+<div class="container">
+	{% block nav%}
+	{{super()}}
+	{% endblock%}
 
+	<div class="blogBox">
+	<h1>{{blog.title}}<br><small>{{blog.time}}</small></h1>
+	
+
+	{% block flash%}
+	{{super()}}
+	{% endblock %}
+
+	<hr>
+	<p class="fontSize">{{blog.content|safe}}</p>
+	<a href="{{url_for('editBlog',blog_id=blog.id)}}">Edit</a>
+	<br>
+	<a href="{{url_for('deleteBlog',blog_id=blog.id)}}">Delete</a>
+	<br>
+	<a href="{{url_for('listBlog')}}">Back to Table</a>
+	</div>
+	<div class="blogBox">
+		<div class="btn-toolbar" role="toolbar">
+			<a class="btn btn-primary btn-sm" href="#">Previous</a>
+			<div class="btn-group" role="group">
+				<a class="btn btn-default btn-sm" href="#">1</a>
+				<a class="btn btn-default btn-sm" href="#">2</a>
+			</div>
+			<a class="btn btn-primary btn-sm" href="#">Next</a>
+			<div class="btn-group" role="group"> </div>
+		</div>
+	</div>
+
+</div>
 {% endblock %}

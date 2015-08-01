@@ -1,0 +1,11 @@
+<head>
+	<style>
+		.box{
+			border:1px solid black;
+			width:4px;
+			height:4px;
+		}
+	</style>
+</head>
+<div class='box'>
+</div>

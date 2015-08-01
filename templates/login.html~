@@ -11,6 +11,5 @@
 		<input name='pw' type='password'>
 	</label>
 	<br>
-	<input type='submit'>
 </form>
 {%endblock%}

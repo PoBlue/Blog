@@ -125,6 +125,9 @@ def welcome(user_name):
 @app.route('/')
 @app.route('/hello')
 def mainRage():
+	print request.cookies
+	print request.cookies.get('user')
+	print request.headers
 	return render_template('MyWeb.html')
 
 @app.route('/blog')
@@ -185,13 +188,18 @@ def deleteBlog(blog_id):
 	else:
 		return render_template('error.html',error='Sotty not have this blog')
 
+#test for study
+@app.route('/test')
+def Html():
+	return render_template('test.html')
+
 @app.route('/blog/new',methods=['GET','POST'])
 def newBlog():
 	blog = dict([('title',''),('content','')]) 
 	if request.method == 'POST':
 		blog['title'] = request.form['title']
 		blog['content']  = request.form['content']
-		time = strftime("%Y-%m-%d %I:%M%p")
+		time = strftime("%I:%M%p in %Y-%m-%d")
 		if valizBlog(blog['title'],blog['content']):
 			new = Blog(title=blog['title'],content=blog['content'],time=time)
 			session.add(new)

@@ -1,0 +1,26 @@
+<head>
+	<style>
+		.box{
+			align-items:center;
+			background-color:yellow;
+			border:1px solid black;
+			width:30%;
+			height:30%;
+			margin:auto;
+		}
+		.line{
+		}
+		.grayBackground{
+			display:flex;
+			width:90%;
+			height:90%;
+			background-color:grey;
+		}
+	</style>
+</head>
+<div class='grayBackground'>
+<div class='box'>
+</div>
+<div class="line">
+</div>
+</div>
