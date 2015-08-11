@@ -1,26 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<style>
-		.box{
-			align-items:center;
-			background-color:yellow;
-			border:1px solid black;
-			width:30%;
-			height:30%;
-			margin:auto;
-		}
-		.line{
-		}
-		.grayBackground{
-			display:flex;
-			width:90%;
-			height:90%;
-			background-color:grey;
-		}
-	</style>
+	<meta charset="UTF-8">
+	<title></title>
 </head>
-<div class='grayBackground'>
-<div class='box'>
-</div>
-<div class="line">
-</div>
-</div>
+<body>
+	<canvas id="c" width="500" height="500"></canvas>
+
+
+<script>
+	var c = document.querySelector("#c");
+	var ctx = c.getContext("2d");
+
+//	ctx.strokeRect(50,50,100,100)
+//
+//	ctx.beginPath();
+//	ctx.moveTo(75,75);
+//	ctx.lineTo(125,75);
+//	ctx.lineTo(125,125);
+//	ctx.lineTo(75,75);
+//	ctx.fill();
+	//ctx.stroke();
+
+	ctx.font = " 36px impact"
+	ctx.fillStyle = "blue"
+	ctx.strokeStyle= "black"
+	ctx.strokeText("CANVAS MEMES!",50,50)
+	//ctx.fillText("CANVAS MEMES!",50,50)
+
+
+</script>
+
+
+</body>
+</html>

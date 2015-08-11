@@ -7,6 +7,10 @@ body{
 	background-color:#c3c3c3;
 }
 
+.fontSize{
+	font-size:19px;
+}
+
 .blogBox{
 	background-color:white;
 	margin-bottom:45px;
@@ -47,6 +51,31 @@ body{
 
 .HeaderNav a{
 	color:white;
+}
+
+.HeaderNav .triangletop1{
+    position: absolute;
+    bottom: 0;
+    right: 0px;
+    border-top: 11px solid transparent;
+    border-bottom: 11px solid transparent;
+    border-right: 11px solid grey;
+}
+.HeaderNav .triangletop2{
+    position: absolute;
+    bottom: 0;
+    right: 0px;
+    border-top: 11px solid transparent;
+    border-bottom: 11px solid transparent;
+    border-right: 11px solid grey;
+}
+.HeaderNav .triangletop3{
+    position: absolute;
+    bottom: 0;
+    right: 0px;
+    border-top: 11px solid transparent;
+    border-bottom: 11px solid transparent;
+    border-right: 11px solid grey;
 }
 
 .HeaderNav .active :after{
