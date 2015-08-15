@@ -122,7 +122,6 @@ def welcome(user_name):
 
 #blog page
 
-@app.route('/')
 @app.route('/hello')
 def mainRage():
 	print request.cookies
@@ -130,6 +129,7 @@ def mainRage():
 	print request.headers
 	return render_template('MyWeb.html')
 
+@app.route('/')
 @app.route('/blog')
 def listBlog():
 	blogs = session.query(Blog).all()
