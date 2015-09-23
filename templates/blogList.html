@@ -15,11 +15,9 @@
 			{%for blog in blogs%}
 				<div class='blogBox'>
 					<h2>{{blog.title}} <br><small>{{blog.time}}</small></h2>
-					<ul id="tags">
 					{%for tag in blog.tags%}
-					<li><a href={{url_for('tagSearch',tag_name=tag.tag_name)}}>{{tag.tag_name}}</a></li>
+					<a href={{url_for('tagSearch',tag_name=tag.tag_name)}}> <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span> {{tag.tag_name}}</a>
 					{%endfor%}
-					</ul>
 					<hr>
 					<p class="content">{{blog.content|safe}}</p>
 					<a class="btn btn-primary btn-sm" href="{{url_for('readBlog',blog_id=blog.id)}}">More</a>
@@ -27,20 +25,29 @@
 				</div>
 			{%endfor%}
 			<div class="blogBox">
-				<div class="btn-toolbar" role="toolbar">
+				<nav>
+				<ul class="pagination">
 					{%if pages > 1%}
-					<a class="btn btn-primary btn-sm" href="{{url_for('listBlog',pages=pages-1)}}">Previous</a>
+					<li>
+					<a href="{{url_for('listBlog',pages=pages-1)}}">前一页</a>
+					</li>
 					{%endif%}
-					<div class="btn-group" role="group">
-					{%for p in range(sumPages)%}
-						<a class="btn btn-default btn-sm" href="{{url_for('listBlog',pages=p+1)}}">{{p+1}}</a>
-					{%endfor%}
-					</div>
+						{%for p in range(sumPages)%}
+						{%if p+1 == pages%}
+						<li class="active">
+						{%else%}
+						<li>
+						{%endif%}
+						<a href="{{url_for('listBlog',pages=p+1)}}">{{p+1}}</a>
+						</li>
+						{%endfor%}
 					{%if pages < sumPages%}
-					<a class="btn btn-primary btn-sm" href="{{url_for('listBlog',pages=pages+1)}}">Next</a>
+					<li>
+					<a href="{{url_for('listBlog',pages=pages+1)}}">下一页</a>
+					</li>
 					{%endif%}
-					<div class="btn-group" role="group"> </div>
-				</div>
+				</ul>
+				</nav>
 			</div>
 		</div>
 		<div class="col-xs-12 col-sm-3 col-sm-offset-1 Margin">
@@ -51,7 +58,10 @@
 					<a href="{{url_for('newBlog')}}">New Blog</a>
 					</li>
 					{% for (tag,count) in tags %}
-					<li><a href="{{url_for('tagSearch',tag_name=tag.tag_name)}}">{{tag.tag_name}}</a>{{count}}</li>
+					<li>
+					<span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
+					<a href="{{url_for('tagSearch',tag_name=tag.tag_name)}}">{{tag.tag_name}}   <span class="badge">{{count}}</span></a>
+					</li>
 					{% endfor %}
 				</ol>
 			</nav>

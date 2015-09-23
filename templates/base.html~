@@ -4,6 +4,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{% block title %}{% endblock %}</title>
 	<link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.css')}}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	{% block css %}<link rel="stylesheet" href="{{url_for('static',filename='css/mystyle.css')}}">{% endblock %}
 	<script async src="{{url_for('static',filename='js/jquery-1.11.3.min.js')}}"></script>
 	<script async type="text/javascript" src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
@@ -28,7 +29,6 @@
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="{{url_for('listBlog')}}">Home</a></li>
 				<li><a href="#">Info</a></li>
-				<li><a href="#">MyHtml</a></li>
 			</ul>
 		</div>
 	</div>

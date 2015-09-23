@@ -53,31 +53,7 @@ body{
 	color:white;
 }
 
-.HeaderNav .triangletop1{
-    position: absolute;
-    bottom: 0;
-    right: 0px;
-    border-top: 11px solid transparent;
-    border-bottom: 11px solid transparent;
-    border-right: 11px solid grey;
-}
-.HeaderNav .triangletop2{
-    position: absolute;
-    bottom: 0;
-    right: 0px;
-    border-top: 11px solid transparent;
-    border-bottom: 11px solid transparent;
-    border-right: 11px solid grey;
-}
-.HeaderNav .triangletop3{
-    position: absolute;
-    bottom: 0;
-    right: 0px;
-    border-top: 11px solid transparent;
-    border-bottom: 11px solid transparent;
-    border-right: 11px solid grey;
-}
-
+/*
 .HeaderNav .active :after{
 	margin-left: -5px;
 	position:absolute;
@@ -92,6 +68,7 @@ body{
 	border-right: 5px solid transparent;
 
 }
+*/
 
 .nav > li > a:hover,
 .nav > li > a:focus{
@@ -111,7 +88,7 @@ nav{
 
 .HeaderNav .navbar-toggle:hover,
 .HeaderNav .navbar-toggle:focus{
-	background-color:#00008B;
+	background-color:rgb(27, 107, 177);
 }
 
 #sidebar h2{
