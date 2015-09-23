@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 import re,hmac,random,string,hashlib
 from time import strftime,localtime
 from flask import Flask,render_template,url_for,request,redirect,flash,jsonify,make_response
@@ -5,9 +6,9 @@ from flask import Flask,render_template,url_for,request,redirect,flash,jsonify,m
 app = Flask(__name__)
 
 #sqlalchemy loaded 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine,func
 from sqlalchemy.orm import sessionmaker
-from db_setup import Blog,Login
+from db_setup import Blog,Login,Tag,Comment,User
 
 engine = create_engine('sqlite:///bolg.db')
 Session = sessionmaker(bind=engine)
@@ -130,43 +131,124 @@ def mainRage():
 	return render_template('MyWeb.html')
 
 @app.route('/')
-@app.route('/blog')
-def listBlog():
-	blogs = session.query(Blog).all()
-	return render_template('blogList.html',blogs = blogs)
+@app.route('/blog/<int:pages>/page')
+def listBlog(pages=1):
+	#插入虚假
+#	blues = User(name='blues',email='123')
+#	yellow = User(name='yellow',email='123')
+#	new = Comment(blog_id=14,from_id=1,to_id=2,comment="hello,world",stage=2,time='no')
+#	session.add(blues)
+#	session.add(yellow)
+#	session.add(new)
+#	session.commit()
+
+	#comment = session.query(Comment).order_by(Comment.id).first()
+	#print(comment.comment)
+	#print(comment.from_user.name)
+	#print(comment.to_user.name)
+
+	NumOfBlogs = session.query(Blog).count()
+	pageOfBlogs = 1
+	sumPages = NumOfBlogs / pageOfBlogs 
+	if (NumOfBlogs%pageOfBlogs):
+		sumPages = sumPages + 1 
+	#check Pages vailable
+	if (pages > sumPages or pages < 1):	
+		return render_template('error.html',error='Sotty not have this page')
+
+	start = (pages-1) * pageOfBlogs
+	end = pages* pageOfBlogs 
+	PageOfBlog = session.query(Blog).order_by(Blog.id)[start:end]
+
+	#tags 
+	tags = session.query(Tag,func.count(Tag.tag_name)).order_by(Tag.tag_name).group_by(Tag.tag_name).all()
+
+	return render_template('blogList.html',blogs = PageOfBlog,pages=pages,sumPages = sumPages,tags=tags)
+
+@app.route('/blog/<int:blog_id>/helpful')
+def helpfulCountUp(blog_id):
+	blog = session.query(Blog).filter_by(id=blog_id).first()
+	blog.helpful += 1
+	session.add(blog)
+	session.commit()
+	return render_template('error.html',error='thank for your vote')
+
+
 
 @app.route('/blog/<int:blog_id>/read')
 def readBlog(blog_id):
-	blog = session.query(Blog).filter_by(id=blog_id).first()
-	if blog:	
-		return render_template('readBlog.html',blog = blog)
-	else:
+	blog = session.query(Blog).filter_by(id=blog_id).one()
+	if not blog:	
 		return render_template('error.html',error='Sotty not have this blog')
+	allBlog = session.query(Blog).filter(Blog.id!=blog_id).order_by(Blog.id).all()
+	NumOfBlogs = session.query(Blog).count()
+
+	if NumOfBlogs >= 3:
+		list = random.sample(allBlog,2)
+	if list:
+		pBlog = list[0]
+		nBlog = list[1]
+
+	return render_template('readBlog.html',blog = blog,pBlog=pBlog,nBlog=nBlog)
+
+@app.route('/tag/list')
+def tagList():
+	tags = session.query(Tag).order_by(Tag.tag_name).group_by(Tag.tag_name).all()
+	print(tags)
+	return render_template('tagList.html',tags = tags)
+
+@app.route('/tag/<string:tag_name>/search')
+def tagSearch(tag_name):
+	tags = session.query(Tag).filter_by(tag_name=tag_name).all()
+	if not tags :
+		return render_template('error.html',error='Sorry for not have this Tag')
+	return render_template('tagSearch.html',tags = tags,tagCount = len(tags)) 
+
+@app.route('/comment/list')
+def commentList():
+	comments = session.query(Comment).order_by(Comment.id).all()
+	print(comments)
+	return render_template('commentList.html',comments =comments)
 
 @app.route('/blog/<int:blog_id>/edit',methods=['GET','POST'])
 def editBlog(blog_id):
 	blog = session.query(Blog).filter_by(id=blog_id).first()
+	old_tags = []
+	for t in blog.tags:
+		old_tags.append(t.tag_name)
 
-	if blog:
-		if request.method == 'POST':
-			blog.title = request.form['title']
-			blog.content = request.form['content']
-			if valizBlog(blog.title,blog.content):
-				session.add(blog)
-				session.commit()
-
-				flash('edit sucessful')
-				return redirect(url_for('readBlog',blog_id=blog.id))
-			else:
-				flash('empty title or content')
-				tmp = render_template('editBlog.html',blog=blog)
-				session.rollback()
-
-				return tmp
-
-		return render_template('editBlog.html',blog=blog)
-	else:
+	if not blog:
 		return render_template('error.html',error='Sotty not have this blog')
+
+	if request.method == 'POST':
+		blog.title = request.form['title']
+		blog.content = request.form['content']
+		tags = request.form['tags']
+		tags = re.split(r'[,\s]\s*',tags)
+		if valizBlog(blog.title,blog.content):
+			session.add(blog)
+			#delete old tags
+			for tag in blog.tags:
+				session.delete(tag)
+			session.commit()
+			#add new tags
+			for tag in tags:
+				if tag:
+					new = Tag(blog_id=blog_id,tag_name=tag)
+					session.add(new)
+			session.commit()
+
+			flash('edit sucessful')
+			return redirect(url_for('readBlog',blog_id=blog.id))
+		else:
+			flash('empty title or content')
+			tmp = render_template('editBlog.html',blog=blog,tags=tags)
+			session.rollback()
+
+			return tmp
+
+	tags = ','.join(old_tags)
+	return render_template('editBlog.html',blog=blog,tags=tags)
 
 @app.route('/blog/<int:blog_id>/delete',methods=['POST','GET'])
 def deleteBlog(blog_id):
@@ -175,6 +257,8 @@ def deleteBlog(blog_id):
 		if request.method == 'POST':
 			if request.form['flag'] == 'on':
 				session.delete(blog)
+				for tag in blog.tags:
+					session.delete(tag)
 				session.commit()
 				return redirect(url_for('listBlog'))
 
@@ -201,7 +285,7 @@ def newBlog():
 		blog['content']  = request.form['content']
 		time = strftime("%I:%M%p in %Y-%m-%d")
 		if valizBlog(blog['title'],blog['content']):
-			new = Blog(title=blog['title'],content=blog['content'],time=time)
+			new = Blog(title=blog['title'],content=blog['content'],time=time,helpful=1)
 			session.add(new)
 			session.commit()
 			flash('New Blog %s' % blog['title'])

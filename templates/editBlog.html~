@@ -16,12 +16,11 @@
 	<input type="text" name="title" value="{{blog.title}}">
 	</h3>
 	</label>
-	
+
+	<h4>Tags:<input type="text" name="tags"></h4>
 
 	<h3>Content:</h3>
-	<textarea cols="50" rows="8" name="content" >
-{{blog.content}}
-	</textarea>
+	<textarea cols="50" rows="8" name="content" >{{blog.content}}</textarea>
 	
 	<br>
 	<br>

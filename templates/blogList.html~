@@ -15,39 +15,44 @@
 			{%for blog in blogs%}
 				<div class='blogBox'>
 					<h2>{{blog.title}} <br><small>{{blog.time}}</small></h2>
+					<ul id="tags">
+					{%for tag in blog.tags%}
+					<li><a href={{url_for('tagSearch',tag_name=tag.tag_name)}}>{{tag.tag_name}}</a></li>
+					{%endfor%}
+					</ul>
 					<hr>
 					<p class="content">{{blog.content|safe}}</p>
 					<a class="btn btn-primary btn-sm" href="{{url_for('readBlog',blog_id=blog.id)}}">More</a>
+					<em><a href="{{url_for('helpfulCountUp',blog_id=blog.id)}}">{{blog.helpful}}</a></em>
 				</div>
 			{%endfor%}
 			<div class="blogBox">
 				<div class="btn-toolbar" role="toolbar">
-					<a class="btn btn-primary btn-sm" href="#">Previous</a>
+					{%if pages > 1%}
+					<a class="btn btn-primary btn-sm" href="{{url_for('listBlog',pages=pages-1)}}">Previous</a>
+					{%endif%}
 					<div class="btn-group" role="group">
-						<a class="btn btn-default btn-sm" href="#">1</a>
-						<a class="btn btn-default btn-sm" href="#">2</a>
+					{%for p in range(sumPages)%}
+						<a class="btn btn-default btn-sm" href="{{url_for('listBlog',pages=p+1)}}">{{p+1}}</a>
+					{%endfor%}
 					</div>
-					<a class="btn btn-primary btn-sm" href="#">Next</a>
+					{%if pages < sumPages%}
+					<a class="btn btn-primary btn-sm" href="{{url_for('listBlog',pages=pages+1)}}">Next</a>
+					{%endif%}
 					<div class="btn-group" role="group"> </div>
 				</div>
 			</div>
 		</div>
 		<div class="col-xs-12 col-sm-3 col-sm-offset-1 Margin">
 			<nav id="sidebar">
-			<h2>Time</h2>
+			<h2>Tags</h2>
 				<ol class="list-unstyled">
 					<li>
 					<a href="{{url_for('newBlog')}}">New Blog</a>
 					</li>
-					<li>
-					<a href="#">March</a>
-					</li>
-					<li>
-					<a href="#">March</a>
-					</li>
-					<li>
-					<a href="#">March</a>
-					</li>
+					{% for (tag,count) in tags %}
+					<li><a href="{{url_for('tagSearch',tag_name=tag.tag_name)}}">{{tag.tag_name}}</a>{{count}}</li>
+					{% endfor %}
 				</ol>
 			</nav>
 		</div>

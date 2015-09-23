@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block body%}
+	{% block nav%}
+	{{super()}}
+	{% endblock%}
+	<h1>comment List</h1>
+	<div>
+		{%for comment in comments%}
+		<h4 class="comment">{{comment.comment}}</h4>
+		{% endfor %}
+	</div> 
+		
+{% endblock%}
