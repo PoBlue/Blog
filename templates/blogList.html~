@@ -4,7 +4,7 @@
 	{% block nav%}
 	{{super()}}
 	{% endblock%}
-	<h1 id="BlogTitle" class="col-sm-12">Blues Blog<br><small>For the Fuking Funny learing!</small></h1>
+	<h1 id="BlogTitle" class="col-sm-12"><a id="name">權</a>的Blog<br></h1>
 
 	{% block flash%} {{super()}} {% endblock %}
 
@@ -15,15 +15,12 @@
 			{%for blog in blogs%}
 				<div class='blogBox'>
 					<h2>{{blog.title}} <br><small>{{blog.time}}</small></h2>
-					<ul id="tags">
 					{%for tag in blog.tags%}
-					<li><a href={{url_for('tagSearch',tag_name=tag.tag_name)}}>{{tag.tag_name}}</a></li>
+					<a href={{url_for('tagSearch',tag_name=tag.tag_name)}}> <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span> {{tag.tag_name}}</a>
 					{%endfor%}
-					</ul>
 					<hr>
 					<p class="content">{{blog.content|safe}}</p>
 					<a class="btn btn-primary btn-sm" href="{{url_for('readBlog',blog_id=blog.id)}}">More</a>
-					<em>{{blog.helpful}}</em><a href="{{url_for('helpfulCountUp',blog_id=blog.id)}}">UpVote</a>
 				</div>
 			{%endfor%}
 			<div class="blogBox">

@@ -15,7 +15,7 @@ body{
 	background-color:white;
 	margin-bottom:45px;
 	margin-bottom:45px;
-	padding:45px;
+	padding:40px 40px;
 	box-shadow:5px 5px 15px;
 }
 
@@ -134,6 +134,14 @@ nav{
 	font-size:70px;
 }
 
+#BlogTitle a{
+	color:#007AE2;
+}
+
+#BlogTitle a:hover,a:focus{
+	color:#23527c;
+	text-decoration:none;
+}
 
 .margin{
 	font-weight: 400;
