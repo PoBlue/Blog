@@ -7,6 +7,9 @@
 
 	<div class="blogBox">
 	<h1>{{blog.title}}<br><small>{{blog.time}}</small></h1>
+		{%for tag in blog.tags%}
+		<a href={{url_for('tagSearch',tag_name=tag.tag_name)}}><span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>{{tag.tag_name}}</a>
+		{%endfor%}
 	
 
 	{% block flash%}
@@ -23,13 +26,11 @@
 	</div>
 	<div class="blogBox">
 		<div class="btn-toolbar" role="toolbar">
-			<a class="btn btn-primary btn-sm" href="#">Previous</a>
-			<div class="btn-group" role="group">
-				<a class="btn btn-default btn-sm" href="#">1</a>
-				<a class="btn btn-default btn-sm" href="#">2</a>
-			</div>
-			<a class="btn btn-primary btn-sm" href="#">Next</a>
-			<div class="btn-group" role="group"> </div>
+			<!-- <a class="btn btn-primary btn-sm" href="{{url_for('readBlog',blog_id=pBlog.id)}}">{{pBlog.title}}</a> -->
+			<a class="btn btn-primary btn-sm" href="{{url_for('listBlog')}}">回到目录</a>
+			<a class="btn btn-primary btn-sm"href="{{url_for('helpfulCountUp',blog_id=blog.id)}}">UpVote</a><span class="badge">{{blog.helpful}}</span> 
+
+			<!-- <a class="btn btn-primary btn-sm" href="{{url_for('readBlog',blog_id=nBlog.id)}}">{{nBlog.title}}</a> -->
 		</div>
 	</div>
 

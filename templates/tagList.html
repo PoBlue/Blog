@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block body%}
+<div class="container">
+	{% block nav%}
+	{{super()}}
+	{% endblock%}
+	<h1>Tag List</h1>
+	<div>
+		{%for tag in tags%}
+		<h4 class="tag">{{tag.tag_name}}</h4>
+		{% endfor %}
+	</div> 
+</div>
+{% endblock%}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block body%}
+<div class="container">
+	{% block nav%}
+	{{super()}}
+	{% endblock%}
+	<h1><b>{{tagCount}}</b> Blogs for tag: <em>{{tags[0].tag_name}}</em></h1>
+	{%for tag in tags%}
+	<div class='blogBox'>
+		<h2>{{tag.blog.title}} <br><small>{{tag.blog.time}}</small></h2>
+		<ul id="tags">
+		{%for tag in tag.blog.tags%}
+		<li><a href={{url_for('tagSearch',tag_name=tag.tag_name)}}>{{tag.tag_name}}</a></li>
+		{%endfor%}
+		</ul>
+		<hr>
+		<p class="content">{{tag.blog.content|safe}}</p>
+		<a class="btn btn-primary btn-sm" href="{{url_for('readBlog',blog_id=tag.blog.id)}}">More</a>
+	</div>
+	{% endfor %}
+</div>
+		
+{% endblock%}

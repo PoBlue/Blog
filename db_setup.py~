@@ -14,7 +14,6 @@ class Blog(Base):
 	title = Column(String(50),nullable=False)
 	content = Column(String(1024),nullable=False)
 	time = Column(String(50),nullable=False)
-	helpful = Column(Integer)
 
 
 class Login(Base):
