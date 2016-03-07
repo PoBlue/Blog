@@ -171,7 +171,7 @@ def helpfulCountUp(blog_id):
 	blog.helpful += 1
 	session.add(blog)
 	session.commit()
-	return render_template('error.html',error='Sotty not have this blog')
+	return render_template('error.html',error='thank for your vote')
 
 
 

@@ -148,7 +148,7 @@ def listBlog(pages=1):
 	#print(comment.to_user.name)
 
 	NumOfBlogs = session.query(Blog).count()
-	pageOfBlogs = 1
+	pageOfBlogs = 5
 	sumPages = NumOfBlogs / pageOfBlogs 
 	if (NumOfBlogs%pageOfBlogs):
 		sumPages = sumPages + 1 
